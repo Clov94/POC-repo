@@ -36,8 +36,7 @@ public class AddressController {
 	@PostMapping(produces = "application/json", consumes = "application/json")
 	public ResponseEntity<Address> addAddress(@RequestBody @Validated Address address) {
 
-		Address addressAdded = addressService.createAddress(address.getCode(), address.getStreet(), address.getCity(),
-				address.getState(), address.getStreetNumber());
+		Address addressAdded = addressService.createAddress(address);
 
 		return new ResponseEntity<Address>(HttpStatus.CREATED);
 	}
@@ -45,8 +44,7 @@ public class AddressController {
 	@PutMapping("/uAddresses")
 	public ResponseEntity<Address> updateAddress(@RequestBody @Validated Address address) {
 
-		Address uAddress = addressService.updateAddress(address.getCode(), address.getStreet(), address.getCity(),
-				address.getState(), address.getStreetNumber());
+		Address uAddress = addressService.updateAddress(address);
 		
 		return new ResponseEntity<Address>(HttpStatus.ACCEPTED);
 	}
@@ -60,11 +58,11 @@ public class AddressController {
 	}
 
 	@GetMapping("/getAddressesByCode/{code}")
-	public EntityModel<Optional<Address>> findAddressByCode(@PathVariable(name = "code") String code) {
+	public EntityModel<Address> findAddressByCode(@PathVariable(name = "code") String code) {
 
 		Optional<Address> addressByCodEntityModel = addressService.findAddressByCode(code);
 		
-		return new EntityModel<Optional<Address>>(HttpStatus.FOUND);
+		return new EntityModel<Address>();
 	}
 
 	@DeleteMapping("/deleteAddresses/{code}")

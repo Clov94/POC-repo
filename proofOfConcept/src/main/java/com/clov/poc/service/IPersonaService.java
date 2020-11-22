@@ -1,6 +1,7 @@
 package com.clov.poc.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import com.clov.poc.model.Person;
 
@@ -12,7 +13,7 @@ public interface IPersonaService {
 	
 	List<Person> findAllPerson();
 	
-	Person findPersonById(int personId);
+	Optional<Person> findPersonById(int personId);
 	
 	void deleteById(int personId);
 

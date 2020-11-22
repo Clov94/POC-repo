@@ -11,9 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import entity.Address;
-import lombok.Data;
 
-@Data
 @Service
 public class AddressService /*implements IAddressService*/{
 	
@@ -58,41 +56,4 @@ public class AddressService /*implements IAddressService*/{
 	 * 
 	 * */
 	
-	
-	/*@Autowired
-	private IAddressRepo _addressRepo;
-	
-	@Override
-	public Address createAddress(String code, String street, String city, String state, String streetNumber){
-
-		return _addressRepo.findByCode(code)
-				.orElse(_addressRepo.save(new Address(code, street, city, state, streetNumber)));
-	}
-
-	@Override
-	public Address updateAddress(String code, String street, String city, String state, String streetNumber){
-
-		return _addressRepo.findByCode(code)
-				.orElse(_addressRepo.save(new Address(code, street, city, state, streetNumber)));
-	}
-
-	@Override
-	public List<Address> findAll(){
-		return _addressRepo.findAll();
-	}
-	
-	public long total() {
-		return _addressRepo.count();
-	}
-
-	@Override
-	public Optional<Address> findAddressById(int addressId) {
-		return _addressRepo.findById(addressId);
-	}
-
-	@Override
-	public void deleteById(int addressId) {
-		_addressRepo.deleteById(addressId);
-	}*/
-
 }

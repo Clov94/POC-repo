@@ -23,38 +23,37 @@ public class AddressService implements IAddressService {
 	public IAddressRepo addressRepo;
 
 	@Override
-	public Address createAddress(String code, String street, String city, String state, String streetNumber) {
+	public Address createAddress(Address address) {
 
 		Address entity = new Address();
-		entity.setCity(city);
-		entity.setCode(code);
-		entity.setStreet(street);
-		entity.setState(state);
-		entity.setStreetNumber(streetNumber);
+		entity.setCity(address.getCity());
+		entity.setCode(address.getCode());
+		entity.setStreet(address.getStreet());
+		entity.setState(address.getState());
+		entity.setStreetNumber(address.getStreetNumber());
 
 		return addressRepo.save(entity);
 	}
 
 	@Override
-	public Address updateAddress(String code, String street, String city, String state, String streetNumber) {
+	public Address updateAddress(Address address) {
 
 		Address entity = new Address();
-		entity.setCity(city);
-		entity.setCode(code);
-		entity.setStreet(street);
-		entity.setState(state);
-		entity.setStreetNumber(streetNumber);
+		entity.setCity(address.getCity());
+		entity.setCode(address.getCode());
+		entity.setStreet(address.getStreet());
+		entity.setState(address.getState());
+		entity.setStreetNumber(address.getStreetNumber());
 
 		return addressRepo.save(entity);
-
 	}
 
 	@Override
 	public List<Address> findAll() {
 
-		if (addressRepo.count() == 0) {
+		if (addressRepo.findAll().isEmpty()) {
 			
-			throw new ModelNotFoundException("There is no entity found!");			
+			throw new ModelNotFoundException("There is no address entity found!");			
 		} 
 		
 		return addressRepo.findAll();

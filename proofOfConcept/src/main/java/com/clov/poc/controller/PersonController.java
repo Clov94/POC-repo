@@ -5,13 +5,14 @@ import static org.springframework.hateoas.server.mvc.ControllerLinkBuilder.metho
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.hateoas.server.mvc.ControllerLinkBuilder;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,67 +31,44 @@ import com.clov.poc.service.impl.PersonaService;
 public class PersonController {
 	
 	@Autowired
-	private PersonaService _peronsaService;
+	private PersonaService peronsaService;
 
 	@PostMapping(produces = "application/json", consumes = "application/json")
 	public ResponseEntity<Person> addPerson(@RequestBody @Validated Person person) {
-		Person persona = _peronsaService.createPerson(person);
 		
-		URI localUri = ServletUriComponentsBuilder
-				.fromCurrentRequest()
-				.path("/{personId}")
-				.buildAndExpand(persona.getid())
-				.toUri();
-		return ResponseEntity.created(localUri).build();
+		Person persona = peronsaService.createPerson(person);
+		
+		return new ResponseEntity<Person>(HttpStatus.CREATED);
 	}
 	
-	@PutMapping
+	@PutMapping("/uPersons")
 	public ResponseEntity<Person> updatePerson(@RequestBody @Validated Person person) {
-		_peronsaService.updatePerson(person);
+		
+		Person uPerson = peronsaService.updatePerson(person);
+		
 		return new ResponseEntity<Person>(HttpStatus.OK);
 	}
 	
 	@GetMapping("/gettingAll")
-
 	public ResponseEntity<List<Person>> getPersons(){
 		
-		List<Person> personasList = null;
-		try {
-			
-			if (_peronsaService.total() != 0) {
-				personasList = _peronsaService.findAllPerson();
-			}
-			
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.getMessage();
-			e.printStackTrace();
-		}
+		List<Person> persons = peronsaService.findAllPerson();
 		
 		return new ResponseEntity<List<Person>>(HttpStatus.OK);
 	}
 	
-	@GetMapping("/personId")
-	public EntityModel<Person> findPersonById(@PathVariable(name = "personId") int personId) {		
-		Person person = _peronsaService.findPersonById(personId);
+	@GetMapping("/getPersonById/{personId}")
+	public EntityModel<Optional<Person>> findPersonById(@PathVariable(name = "personId") int personId) {
 		
-		if(person.equals(null)) {
-			throw new ModelNotFoundException("person" + personId + " id, not found");
-		}
+		Optional<Person> person = peronsaService.findPersonById(personId);
 		
-		EntityModel<Person> resource = new EntityModel<Person>(person);
-		ControllerLinkBuilder linkBuilder = linkTo(methodOn(this.getClass()).findPersonById(personId));
-		resource.add(linkBuilder.withRel("person-resource"));
-		
-		return resource;
+		return new EntityModel<Person>(HttpStatus.OK);
 	}
 	
+	@DeleteMapping("/deleteById/{personId}")
 	public ResponseEntity<Object> deleteById(@PathVariable("personId") int personId){
-		Person person = _peronsaService.findPersonById(personId);
 		
-		if (person.equals(null)) {
-			throw new ModelNotFoundException("there is no " + personId + " id person found to delete");
-		}
+		peronsaService.deleteById(personId);
 		
 		return new ResponseEntity<Object>(HttpStatus.OK);
 	}

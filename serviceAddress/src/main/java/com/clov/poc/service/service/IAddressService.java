@@ -9,9 +9,9 @@ import com.clov.poc.service.model.Address;
 
 public interface IAddressService {
 	
-	Address createAddress(String code, String street, String city, String state, String streetNumber);
+	Address createAddress(Address address);
 	
-	Address updateAddress(String code, String street, String city, String state, String streetNumber);
+	Address updateAddress(Address address);
 
 	List<Address> findAll();
 	

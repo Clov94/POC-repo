@@ -1,12 +1,17 @@
 package com.clov.poc.service.impl;
 
-import java.util.List;
+import static org.springframework.hateoas.server.mvc.ControllerLinkBuilder.linkTo;
+import static org.springframework.hateoas.server.mvc.ControllerLinkBuilder.methodOn;
 
-import javax.transaction.Transactional;
+import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.EntityModel;
+import org.springframework.hateoas.server.mvc.ControllerLinkBuilder;
 import org.springframework.stereotype.Service;
 
+import com.clov.poc.exception.ModelNotFoundException;
 import com.clov.poc.model.Person;
 import com.clov.poc.repo.IPersonRepo;
 import com.clov.poc.service.IPersonaService;
@@ -15,35 +20,71 @@ import com.clov.poc.service.IPersonaService;
 public class PersonaService implements IPersonaService{
 	
 	@Autowired
-	private IPersonRepo _personaRepo;
+	private IPersonRepo personaRepo;
+	
+	@Autowired
+	private AddressService addressService;
 
 	@Override
 	public Person createPerson(Person person) {
-		return _personaRepo.save(person);
+		
+		Person entity = new Person();
+		entity.setFirstName(person.getFirstName());
+		entity.setLastName(person.getLastName());
+		entity.setAge(person.getAge());
+		entity.setBloodType(person.getBloodType());
+		entity.setAddress(addressService.getAddresses());
+		
+		return personaRepo.save(entity);
 	}
 
 	@Override
 	public Person  updatePerson(Person person) {
-		return _personaRepo.save(person);
+		Person entity = new Person();
+		entity.setFirstName(person.getFirstName());
+		entity.setLastName(person.getLastName());
+		entity.setAge(person.getAge());
+		entity.setBloodType(person.getBloodType());
+		entity.setAddress(addressService.getAddresses());
+		
+		return personaRepo.save(entity);
 	}
 
-	public long total() {
-		return _personaRepo.count();
-	}
 
 	@Override
 	public List<Person> findAllPerson(){
-		return _personaRepo.findAll();
+		
+		if (personaRepo.findAll().isEmpty()) {
+			
+			throw new ModelNotFoundException("There is no person entity found!");		
+		}
+		
+		return personaRepo.findAll();
 	}
 
 	@Override
-	public Person findPersonById(int personId) {
-		 return _personaRepo.getOne(personId);
+	public Optional<Person> findPersonById(int personId) {
+		Optional<Person> person = personaRepo.findById(personId);
+		
+		if(!person.isPresent()) {
+			
+			throw new ModelNotFoundException("person" + personId + " id, not found");
+		}
+
+		return person;
 	}
 
 	@Override
 	public void deleteById(int personId) {
-		_personaRepo.deleteById(personId);
+		
+		Optional<Person> person = personaRepo.findById(personId);
+		
+		if (!person.isPresent()) {
+			
+			throw new ModelNotFoundException("there is no " + personId + " id person found to delete");
+		}
+		
+		personaRepo.deleteById(personId);
 	}
 
 }

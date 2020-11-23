@@ -15,11 +15,9 @@ import entity.Address;
 @Service
 public class AddressService /*implements IAddressService*/{
 	
-	private final String URLService = "http://localhost:8090/service";
+	private final String URLService = "http://localhost:8090/service/address";
 	
 	private final RestTemplate restTemplate = new RestTemplate();
-	
-
 
 	public Address getAddressByCode(String code) {
 		

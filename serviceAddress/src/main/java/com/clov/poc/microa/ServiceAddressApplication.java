@@ -1,4 +1,4 @@
-package com.clov.poc.service;
+package com.clov.poc.microa;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

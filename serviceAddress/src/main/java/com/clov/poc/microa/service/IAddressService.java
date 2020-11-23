@@ -1,11 +1,11 @@
-package com.clov.poc.service.service;
+package com.clov.poc.microa.service;
 
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.http.ResponseEntity;
 
-import com.clov.poc.service.model.Address;
+import com.clov.poc.microa.model.Address;
 
 public interface IAddressService {
 	
@@ -16,6 +16,8 @@ public interface IAddressService {
 	List<Address> findAll();
 	
 	Optional<Address> findAddressByCode(String code);
+	
+	List<Address> findByPersonId(int personId);
 
-	Object deleteByCode(String code);
+	void deleteByCode(String code);
 }

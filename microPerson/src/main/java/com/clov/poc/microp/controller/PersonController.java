@@ -1,14 +1,9 @@
-package com.clov.poc.controller;
+package com.clov.poc.microp.controller;
 
-import static org.springframework.hateoas.server.mvc.ControllerLinkBuilder.linkTo;
-import static org.springframework.hateoas.server.mvc.ControllerLinkBuilder.methodOn;
-
-import java.net.URI;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -20,14 +15,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-
-import com.clov.poc.exception.ModelNotFoundException;
-import com.clov.poc.model.Person;
-import com.clov.poc.service.impl.PersonaService;
+import com.clov.poc.microp.model.Person;
+import com.clov.poc.microp.service.impl.PersonaService;
 
 @RestController
-@RequestMapping("/persons")
+@RequestMapping("/service/persons")
 public class PersonController {
 	
 	@Autowired
@@ -38,26 +30,26 @@ public class PersonController {
 		
 		Person persona = peronsaService.createPerson(person);
 		
-		return new ResponseEntity<Person>(HttpStatus.CREATED);
+		return new ResponseEntity<Person>(persona, HttpStatus.CREATED);
 	}
 	
-	@PutMapping("/uPersons")
+	@PutMapping
 	public ResponseEntity<Person> updatePerson(@RequestBody @Validated Person person) {
 		
 		Person uPerson = peronsaService.updatePerson(person);
 		
-		return new ResponseEntity<Person>(HttpStatus.OK);
+		return new ResponseEntity<Person>(uPerson, HttpStatus.OK);
 	}
 	
-	@GetMapping("/gettingAll")
+	@GetMapping
 	public ResponseEntity<List<Person>> getPersons(){
 		
 		List<Person> persons = peronsaService.findAllPerson();
 		
-		return new ResponseEntity<List<Person>>(HttpStatus.OK);
+		return new ResponseEntity<List<Person>>(persons, HttpStatus.OK);
 	}
 	
-	@GetMapping("/getPersonById/{personId}")
+	@GetMapping("/{personId}")
 	public ResponseEntity<Person> findPersonById(@PathVariable(name = "personId") int personId) {
 		
 		Optional<Person> person = peronsaService.findPersonById(personId);
@@ -65,7 +57,7 @@ public class PersonController {
 		return new ResponseEntity<Person>(HttpStatus.OK);
 	}
 	
-	@DeleteMapping("/deleteById/{personId}")
+	@DeleteMapping("/{personId}")
 	public ResponseEntity<Object> deleteById(@PathVariable("personId") int personId){
 		
 		peronsaService.deleteById(personId);

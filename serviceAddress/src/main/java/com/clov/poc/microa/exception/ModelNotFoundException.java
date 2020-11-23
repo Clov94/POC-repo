@@ -1,4 +1,4 @@
-package com.clov.poc.service.exception;
+package com.clov.poc.microa.exception;
 
 public class ModelNotFoundException extends RuntimeException{
 	

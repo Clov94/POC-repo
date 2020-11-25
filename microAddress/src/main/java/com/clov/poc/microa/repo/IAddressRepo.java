@@ -11,7 +11,7 @@ import com.clov.poc.microa.model.Address;
 @Repository
 public interface IAddressRepo extends JpaRepository<Address, String> {
 	
-	Optional<Address> findByCode(String code);
+	Optional<Address> findByCode(int code);
 
 	List<Address> findByPersonId(int personId);
 

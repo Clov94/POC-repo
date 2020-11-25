@@ -6,6 +6,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.Pattern;
 
 import lombok.Data;
 
@@ -21,12 +23,14 @@ public class Address {
 	private int code;
 
 	@Column(name = "PERSON_ID", nullable = false)
+	@Min(value = 1, message = "Person Id is not valid")
 	private int personId;
 	
 	@Column(name = "STREET")
 	private String street;
 	
 	@Column(name = "CITY")
+	@Pattern(regexp = "^[a-zA-Z]*$")
 	private String city;
 	
 	@Column(name = "STATE")

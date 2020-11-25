@@ -15,9 +15,9 @@ public interface IAddressService {
 
 	List<Address> findAll();
 	
-	Optional<Address> findAddressByCode(String code);
+	Optional<Address> findAddressByCode(int code);
 	
 	List<Address> findByPersonId(int personId);
 
-	void deleteByCode(String code);
+	void deleteByCode(int code);
 }

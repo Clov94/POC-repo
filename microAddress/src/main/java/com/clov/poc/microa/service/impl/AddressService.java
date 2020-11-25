@@ -37,7 +37,7 @@ public class AddressService implements IAddressService {
 	}
 
 	@Override
-	public Optional<Address> findAddressByCode(String code) {
+	public Optional<Address> findAddressByCode(int code) {
 
 		Optional<Address> address = addressRepo.findByCode(code);
 
@@ -56,13 +56,13 @@ public class AddressService implements IAddressService {
 	
 
 	@Override
-	public void deleteByCode(String code) {
+	public void deleteByCode(int code) {
 		
 		Optional<Address> entity = addressRepo.findByCode(code);
 
 		if (!entity.isPresent()) {
 			
-			throw new ModelNotFoundException("impossible to delete the code: " + code + ", it does not found!");
+			throw new ModelNotFoundException("impossible to delete the entity, the code: " + code + " was not found!");
 		}
 		
 		addressRepo.delete(entity.get());

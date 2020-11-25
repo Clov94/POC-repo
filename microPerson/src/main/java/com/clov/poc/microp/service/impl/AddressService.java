@@ -14,7 +14,7 @@ import org.springframework.web.client.RestTemplate;
 import entity.Address;
 
 @Service
-public class AddressService /* implements IAddressService */ {
+public class AddressService {
 
 	private final String URLService = "http://localhost:8090/service/address";
 
@@ -101,7 +101,10 @@ public class AddressService /* implements IAddressService */ {
 
 	/*
 	 * 
-	 * swagger separar servicios junit test programacion reactiva
+	 * swagger | DONE
+	 * separar servicios | DONE
+	 * junit test - mockmvc | in progress
+	 * programacion reactiva
 	 * 
 	 */
 

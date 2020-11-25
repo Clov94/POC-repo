@@ -18,12 +18,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.clov.poc.microa.exception.ModelNotFoundException;
 import com.clov.poc.microa.model.Address;
 import com.clov.poc.microa.service.impl.AddressService;
 
-@RestController
 @Validated
+@RestController
 @RequestMapping("/service/address")
 public class AddressController {
 
@@ -42,44 +41,39 @@ public class AddressController {
 	public ResponseEntity<Address> updateAddress(@RequestBody @Valid Address address) {
 
 		Address uAddress = addressService.updateAddress(address);
-		
-		return new ResponseEntity<Address>(uAddress, HttpStatus.ACCEPTED);
+
+		return new ResponseEntity<Address>(uAddress, HttpStatus.OK);
 	}
 
 	@GetMapping
 	public ResponseEntity<List<Address>> getAddress() {
-		
+
 		List<Address> addressList = addressService.findAll();
 
 		return new ResponseEntity<List<Address>>(addressList, HttpStatus.OK);
 	}
 
 	@GetMapping("/{code}")
-	public ResponseEntity<Optional<Address>> findAddressByCode(@PathVariable(name = "code") String code) {
+	public ResponseEntity<Optional<Address>> findAddressByCode(@PathVariable(name = "code") int code) {
 
 		Optional<Address> addressByCode = addressService.findAddressByCode(code);
-		
-		if (!addressByCode.isPresent()) {
-			
-			throw new ModelNotFoundException("Is not found the address with code: " + code);
-		}		
-		
-		return new ResponseEntity<Optional<Address>>(addressByCode, HttpStatus.FOUND);
+
+		return new ResponseEntity<Optional<Address>>(addressByCode, HttpStatus.OK);
 	}
-	
+
 	@GetMapping("/by-person/{personId}")
 	public ResponseEntity<List<Address>> findAddressesByPersonId(@PathVariable(name = "personId") int personId) {
 
 		List<Address> addressList = addressService.findByPersonId(personId);
 
-		return new ResponseEntity<List<Address>>(addressList, HttpStatus.FOUND);
+		return new ResponseEntity<List<Address>>(addressList, HttpStatus.OK);
 	}
 
 	@DeleteMapping("/{code}")
-	public ResponseEntity<Object> deleteByCode(@PathVariable("code") String code) {
-		
+	public ResponseEntity<Object> deleteByCode(@PathVariable("code") int code) {
+
 		addressService.deleteByCode(code);
-		
+
 		return new ResponseEntity<Object>(HttpStatus.OK);
 	}
 

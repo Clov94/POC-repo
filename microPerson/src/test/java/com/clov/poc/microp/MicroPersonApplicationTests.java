@@ -1,4 +1,4 @@
-package com.clov.poc.micro;
+package com.clov.poc.microp;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;

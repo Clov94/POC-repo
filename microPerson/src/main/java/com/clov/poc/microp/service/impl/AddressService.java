@@ -1,8 +1,8 @@
 package com.clov.poc.microp.service.impl;
 
-import java.util.Arrays;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
@@ -12,15 +12,18 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import entity.Address;
+import lombok.Data;
 
+@Data
 @Service
 public class AddressService {
 
-	private final String URLService = "http://localhost:8090/service/address";
+	private final String URLService = "http://localhost:8090/service/address/";
 
-	private final RestTemplate restTemplate = new RestTemplate();
+	@Autowired
+	private RestTemplate restTemplate;
 
-	public Address getAddressByCode(String code) {
+	public Address getAddressByCode(int code) {
 
 		HttpHeaders requestHeaders = new HttpHeaders();
 
@@ -30,9 +33,18 @@ public class AddressService {
 		// request entity is created with request headers
 		HttpEntity<Void> requestEntity = new HttpEntity<>(requestHeaders);
 
-		return restTemplate.exchange(URLService.concat("/" + code), HttpMethod.GET, requestEntity, Address.class)
-				.getBody();
+		return restTemplate.exchange(URLService + code, HttpMethod.GET, requestEntity, Address.class).getBody();
 	}
+	
+	/*
+	 * 
+	 * estudiar sistemas de versionamiento
+	 * csv/svn
+	 * git/mercurial
+	 * también estudiar funciones de encriptación
+	 * programacion reactiva
+	 * 
+	 * */
 
 	public List<Address> getAddresses() {
 
@@ -68,7 +80,7 @@ public class AddressService {
 		};
 
 		final List<Address> addressList = restTemplate
-				.exchange(URLService + "/by-person/" + personId, HttpMethod.GET, requestEntity, type).getBody();
+				.exchange(URLService + "by-person/" + personId, HttpMethod.GET, requestEntity, type).getBody();
 
 		return addressList;
 
@@ -98,14 +110,5 @@ public class AddressService {
 
 		return restTemplate.exchange(URLService, HttpMethod.PUT, requestEntity, Address.class).getBody();
 	}
-
-	/*
-	 * 
-	 * swagger | DONE
-	 * separar servicios | DONE
-	 * junit test - mockmvc | in progress
-	 * programacion reactiva
-	 * 
-	 */
 
 }

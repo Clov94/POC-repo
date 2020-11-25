@@ -10,6 +10,9 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+
+import static org.mockito.ArgumentMatchers.anyInt;
+
 import java.util.Arrays;
 import java.util.Optional;
 
@@ -20,6 +23,7 @@ import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import com.clov.poc.microp.model.Person;
@@ -113,14 +117,15 @@ class PersonControllerTest {
 		person.setAge("1");
 		person.setBloodType("1");
 
-		when(personService.findPersonById(person.getId())).thenReturn(Optional.of(person));
+		when(personService.findPersonById(anyInt())).thenReturn(Optional.of(person));
 
-		this.mockMvc.perform(get("/service/persons/{personId}", person.getId()).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andDo(print())
-				.andExpect(content().json(oMapper.writeValueAsString(Optional.of(person))));
+		this.mockMvc.perform(get("/service/persons/1").contentType(MediaType.APPLICATION_JSON))
+				.andExpect(status().isOk()).andDo(MockMvcResultHandlers.print())
+				.andExpect(content().json(oMapper.writeValueAsString(person)))
+				.andReturn();
 
 	}
-	
+
 	@Test
 	void testDeleteById() throws JsonProcessingException, Exception {
 		Person person = new Person();
@@ -130,13 +135,12 @@ class PersonControllerTest {
 		person.setLastName("1");
 		person.setAge("1");
 		person.setBloodType("1");
-		
+
 		doNothing().when(personService).deleteById(person.getId());
-		
+
 		this.mockMvc
 				.perform(delete("/service/persons/{personId}", person.getId()).contentType(MediaType.APPLICATION_JSON))
-				.andExpect(status().isOk()).andDo(print())
-				.andExpect(content().json(oMapper.writeValueAsString(person)));
+				.andExpect(status().isOk()).andDo(print());
 	}
 
 }

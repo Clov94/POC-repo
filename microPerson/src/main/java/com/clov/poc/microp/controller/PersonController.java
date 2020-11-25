@@ -54,15 +54,15 @@ public class PersonController {
 		
 		Optional<Person> person = peronsaService.findPersonById(personId);
 		
-		return new ResponseEntity<Person>(HttpStatus.OK);
+		return new ResponseEntity<Person>(person.get(), HttpStatus.OK);
 	}
 	
 	@DeleteMapping("/{personId}")
-	public ResponseEntity<Object> deleteById(@PathVariable("personId") int personId){
+	public ResponseEntity<Void> deleteById(@PathVariable("personId") int personId){
 		
 		peronsaService.deleteById(personId);
 		
-		return new ResponseEntity<Object>(HttpStatus.OK);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
 
 }

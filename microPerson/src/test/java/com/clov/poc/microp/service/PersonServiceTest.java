@@ -32,7 +32,7 @@ class PersonServiceTest {
 	@InjectMocks
 	private PersonaService personService;
 
-	@InjectMocks
+	@Mock
 	private AddressService addressService;
 
 	@Mock
@@ -107,10 +107,9 @@ class PersonServiceTest {
 		address.setState("jalisco");
 		address.setStreet("madero");
 		address.setStreetNumber("1");
-//		person.setAddresses(Arrays.asList(address));
 
 		when(personRepo.findAll()).thenReturn(Arrays.asList(person));
-		assertEquals(person, personService.findAllPerson());
+		assertEquals(Arrays.asList(person), personService.findAllPerson());
 
 	}
 	
@@ -156,7 +155,6 @@ class PersonServiceTest {
 		personService.deleteById(person.getId());
 		
 		verify(personRepo, times(1)).findById(anyInt());
-//		verify(personRepo, times(1)).delete(any(Person.class));
 		
 	}
 	

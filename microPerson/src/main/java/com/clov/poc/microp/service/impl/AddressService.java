@@ -35,16 +35,6 @@ public class AddressService {
 
 		return restTemplate.exchange(URLService + code, HttpMethod.GET, requestEntity, Address.class).getBody();
 	}
-	
-	/*
-	 * 
-	 * estudiar sistemas de versionamiento
-	 * csv/svn
-	 * git/mercurial
-	 * también estudiar funciones de encriptación
-	 * programacion reactiva
-	 * 
-	 * */
 
 	public List<Address> getAddresses() {
 
